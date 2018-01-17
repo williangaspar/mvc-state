@@ -1,0 +1,21 @@
+{
+  "name": "mvc-state",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-ts \"./**/*Spec.ts\"",
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts",
+    "build": "tsc"
+  },
+  "author": "Willian Gaspar",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^2.6.2",
+    "@types/jasmine": "^2.5.53",
+    "jasmine": "^2.6.0",
+    "jasmine-ts": "^0.2.0"
+  }
+}

@@ -1,0 +1,9 @@
+.ButtonBar {
+    float: right;
+    background-color: transparent;
+}
+
+.ButtonBar Button:first-of-type {
+    padding-right: 10px;
+    margin-right: 10px;
+}

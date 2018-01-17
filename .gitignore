@@ -1,0 +1,7 @@
+node_modules
+*.so
+*.bin
+*.out
+*.node
+*.log
+.data.json
