@@ -6,12 +6,12 @@
         "target": "es5",
         "lib": ["es6", "dom"],
         "declaration": true,
-        "sourceMap": true,
+        "sourceMap": false,
         "removeComments": true,
         "importHelpers": false,
         "moduleResolution": "node",
-        "experimentalDecorators": true, 
-        "emitDecoratorMetadata": true 
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     },
     "include": [
         "./src/**/*",

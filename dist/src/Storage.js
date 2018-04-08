@@ -67,4 +67,3 @@ var Storage = (function () {
     return Storage;
 }());
 exports.Storage = Storage;
-//# sourceMappingURL=Storage.js.map
