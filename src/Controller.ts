@@ -6,4 +6,12 @@ export class Controller implements IController {
         const id = this.constructor.name;
         return watch(id);
     }
+
+    public loadStorage() {
+        if ((this as any).model) {
+            (this as any).model.loadStorage();
+        } else {
+            console.warn('loadStorage needs a model');
+        }
+    }
 }

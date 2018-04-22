@@ -5,4 +5,5 @@ export declare class Model<T> implements IModel<T> {
     protected storage: T;
     constructor(view: IView, storageObj: T);
     updateView(obj?: T | Object): void;
+    loadStorage(): void;
 }

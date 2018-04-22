@@ -40,4 +40,12 @@ describe('Model', () => {
         model.setStr('A');
         expect(view.setState).toHaveBeenCalledWith({ prop: 1, str: 'A' });
     });
+
+    it('loadStorage', () => {
+        model.incProp();
+        model.setStr('B');
+        spyOn(view, 'setState');
+        model.loadStorage();
+        expect(view.setState).toHaveBeenCalledWith({ prop: 1, str: 'B' });
+    });
 });

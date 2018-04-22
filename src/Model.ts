@@ -15,4 +15,11 @@ export class Model<T> implements IModel<T> {
     public updateView(obj?: T | Object): void {
         this.view.setState(obj);
     }
+
+    public loadStorage() {
+        const props = Object.keys(this.storage).map((key) => key);
+        let obj: any = {};
+        props.forEach((prop) => obj[prop] = (this.storage as any)[prop]);
+        this.view.setState(obj);
+    }
 }
