@@ -1,20 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Model = (function () {
-    function Model(view, storageObj) {
+class Model {
+    constructor(view, storageObj) {
         this.view = view;
         this.storage = storageObj;
     }
-    Model.prototype.updateView = function (obj) {
+    updateView(obj) {
         this.view.setState(obj);
-    };
-    Model.prototype.loadStorage = function () {
-        var _this = this;
-        var props = Object.keys(this.storage).map(function (key) { return key; });
-        var obj = {};
-        props.forEach(function (prop) { return obj[prop] = _this.storage[prop]; });
+    }
+    loadStorage() {
+        const props = Object.keys(this.storage).map((key) => key);
+        let obj = {};
+        props.forEach((prop) => obj[prop] = this.storage[prop]);
         this.view.setState(obj);
-    };
-    return Model;
-}());
+    }
+}
 exports.Model = Model;
