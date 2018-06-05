@@ -78,10 +78,10 @@ export class Storage<T> implements IStorage<T> {
     }
 
     public getListener = (id: string): Listener => {
-        const watch = this.getWatch(id);
-        const unwatch = this.getUnwatch(id);
-        const unWatchAll = this.getUnwatchAll(id);
-        return { watch, unwatch, unWatchAll };
+        const watch = this.getWatch(id).bind(this);
+        const unwatch = this.getUnwatch(id).bind(this);
+        const unwatchAll = this.getUnwatchAll(id).bind(this);
+        return { watch, unwatch, unwatchAll };
     }
 
     private initProps<T>(state: T) {

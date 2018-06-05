@@ -106,7 +106,7 @@ describe('Storage.', () => {
 
         call1 = false;
 
-        listener.unWatchAll();
+        listener.unwatchAll();
 
         storage.state.var1 = 2;
         storage.state.var2 = 'A';
