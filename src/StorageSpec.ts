@@ -63,6 +63,58 @@ describe('Storage.', () => {
         expect(secondCalled).toBe(true);
     });
 
+    it('unwatch', () => {
+        const watch = storage.getWatch('myCtrl');
+        const unwatch = storage.getUnwatch('myCtrl');
+        let call1 = false;
+        let call2 = false;
+
+        watch('var1', (var1: any) => {
+            call1 = true;
+        });
+
+        watch('var2', (var2: any) => {
+            call2 = true;
+        });
+
+        const result = unwatch('var2');
+
+        storage.state.var1 = 11;
+        storage.state.var2 = 'A';
+
+        expect(result).toBe(true);
+        expect(call1).toBe(true);
+        expect(call2).toBe(false);
+    });
+
+    it('unwatchAll', () => {
+        const listener = storage.getListernner('ctrl1');
+        let call1 = false;
+        let call2 = false;
+
+        listener.watch('var1', (var1: any) => {
+            call1 = true;
+        });
+
+        listener.watch('var2', (var2: any) => {
+            call2 = true;
+        });
+
+        storage.state.var1 = 1;
+
+        expect(call1).toBe(true);
+
+        call1 = false;
+
+        listener.unWatchAll();
+
+        storage.state.var1 = 2;
+        storage.state.var2 = 'A';
+
+        expect(call1).toBe(false);
+        expect(call2).toBe(false);
+    });
+
     it('Emit event', () => {
         const watch = storage.getWatch('myCtrl');
         let called = false;

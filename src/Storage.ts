@@ -1,4 +1,4 @@
-import { IStorage } from './IStorage';
+import { IStorage, Watch, Unwatch, Emit, Listener, UnwatchAll } from './IStorage';
 
 interface IMapFunction {
     id: string;
@@ -22,36 +22,66 @@ export class Storage<T> implements IStorage<T> {
                 const index = list.findIndex((item) => item.id === id);
 
                 if (index > -1) {
+                    // replace existing watcher with a new one
                     list[index] = { id, callBack }
                 } else {
+                    // new watcher
                     list.push({ id, callBack });
                 }
 
             } else {
+                // New variable
                 this.watchMap.set(variableName, [{ id, callBack }]);
             }
         }
     }
 
-    public removeWatch(id: string): boolean {
-        let index = -1;
-        this.watchMap.forEach((callBack) => {
-            index = callBack.findIndex((item) => item.id === id);
-            if (index > -1) {
-                callBack.splice(index, 1);
+    public getUnwatch(id: string): Unwatch {
+        return (variableName: string) => {
+            const list = this.watchMap.get(variableName);
+            if (list) {
+                const index = list.findIndex((item) => item.id === id);
+                if (index > -1) {
+                    list.splice(index, 1);
+                    return true;
+                }
             }
-        });
-        return (index != -1);
+            return false;
+        }
+    }
+
+    public getUnwatchAll(id: string): UnwatchAll {
+        return () => {
+            this.watchMap.forEach((value: any, key: string) => {
+                const list = this.watchMap.get(key);
+                if (list) {
+                    const index = list.findIndex((item) => item.id === id);
+                    if (index > -1) {
+                        list.splice(index, 1);
+                        return true;
+                    }
+                }
+            });
+
+            return false;
+        }
     }
 
     public get state(): T {
         return this._state;
     }
 
-    public emit = (event: string, data?: any): void  => {
+    public emit = (event: string, data?: any): void => {
         const map = this.watchMap.get(event)
         if (map)
             map.forEach((item) => item.callBack(data));
+    }
+
+    public getListernner = (id: string): Listener => {
+        const watch = this.getWatch(id);
+        const unwatch = this.getUnwatch(id);
+        const unWatchAll = this.getUnwatchAll(id);
+        return { watch, unwatch, unWatchAll };
     }
 
     private initProps<T>(state: T) {

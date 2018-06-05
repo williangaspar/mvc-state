@@ -1,14 +1,17 @@
 
 # MVC State
 
+## TODO
+* update exemple's folder and readme
+
 ## The MVC patter
-There is many definitions of whats is MVC out there, here is the one we are following:  
+There is many definitions of whats is MVC out there, here is the one we are following:
 
 ![MVC](mvc.png)
 
 ## Storage
 
-A storage is a way of sharing data. 
+A storage is a way of sharing data.
 
 ```javascript
 import { Storage } from 'mvc-state';
@@ -27,7 +30,7 @@ export const MyDataStorage = new Storage<MyData>(new MyData());
 ```
 
 We start by creating a class with all data we want to share, called, `MyData` is this exemple. Don't forget to give a initial value to EVERY property.
-Next you have an event `enum`. Later on you will see that MVC-State uses watchers to capture changes in the data storage. `MyDataEvt` will be responsible for provide you with the right events to listem. 
+Next you have an event `enum`. Later on you will see that MVC-State uses watchers to capture changes in the data storage. `MyDataEvt` will be responsible for provide you with the right events to listem.
 
 ## Model
 
@@ -50,12 +53,12 @@ export class InputModel extends Model<MyData> {
 }
 ```
 
-By default a model's constructor takes 2 parameter: 
-* `view` - That's the object you need to call when you want to update the view layer. 
+By default a model's constructor takes 2 parameter:
+* `view` - That's the object you need to call when you want to update the view layer.
 * `storage` - That's the object you call when you want to update the shared storage.
 
 The `IntFoo` function shows the basic usage of these 2 objects. When `this.storage.foo` is set, a event
-is send out to every watcher listening to the `MyDataEvt.FOO` event. And `this.updateView` works like the 
+is send out to every watcher listening to the `MyDataEvt.FOO` event. And `this.updateView` works like the
 `setState` used by React.
 
 Be aware that the view will only be updated when you call `updateView`.
@@ -94,7 +97,7 @@ export class ChartCtrl extends Controller {
 
         //Just getting a unique id. you can set your own id by calling: getWatch('myId');
         const watch = this.setIdToWatch(getWatch);
-        
+
         watch(MyDataEvt.FOO, (foo: number) => this.model.calcFoo(foo));
         watch(MyDataEvt.BAR, (bar: number) => this.model.calcBar(bar));
     };

@@ -24,19 +24,43 @@ class Storage {
             if (map)
                 map.forEach((item) => item.callBack(data));
         };
+        this.getListernner = (id) => {
+            const watch = this.getWatch(id);
+            const unwatch = this.getUnwatch(id);
+            const unWatchAll = this.getUnwatchAll(id);
+            return { watch, unwatch, unWatchAll };
+        };
         this.watchMap = new Map();
         this._state = {};
         this.initProps(state);
     }
-    removeWatch(id) {
-        let index = -1;
-        this.watchMap.forEach((callBack) => {
-            index = callBack.findIndex((item) => item.id === id);
-            if (index > -1) {
-                callBack.splice(index, 1);
+    getUnwatch(id) {
+        return (variableName) => {
+            const list = this.watchMap.get(variableName);
+            if (list) {
+                const index = list.findIndex((item) => item.id === id);
+                if (index > -1) {
+                    list.splice(index, 1);
+                    return true;
+                }
             }
-        });
-        return (index != -1);
+            return false;
+        };
+    }
+    getUnwatchAll(id) {
+        return () => {
+            this.watchMap.forEach((value, key) => {
+                const list = this.watchMap.get(key);
+                if (list) {
+                    const index = list.findIndex((item) => item.id === id);
+                    if (index > -1) {
+                        list.splice(index, 1);
+                        return true;
+                    }
+                }
+            });
+            return false;
+        };
     }
     get state() {
         return this._state;
