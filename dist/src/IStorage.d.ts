@@ -12,5 +12,5 @@ export interface IStorage<T> {
 export interface Listener {
     watch: Watch;
     unwatch: Unwatch;
-    unWatchAll: UnwatchAll;
+    unwatchAll: UnwatchAll;
 }

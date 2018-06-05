@@ -4,8 +4,8 @@ export declare class Storage<T> implements IStorage<T> {
     private _state;
     constructor(state: T);
     getWatch: (id: string) => (variableName: string, callBack: Function) => void;
-    getUnwatch(id: string): Unwatch;
-    getUnwatchAll(id: string): UnwatchAll;
+    getUnwatch: (id: string) => Unwatch;
+    getUnwatchAll: (id: string) => UnwatchAll;
     readonly state: T;
     emit: (event: string, data?: any) => void;
     getListener: (id: string) => Listener;

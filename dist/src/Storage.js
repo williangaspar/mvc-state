@@ -19,6 +19,34 @@ class Storage {
                 }
             };
         };
+        this.getUnwatch = (id) => {
+            return (variableName) => {
+                const list = this.watchMap.get(variableName);
+                if (list) {
+                    const index = list.findIndex((item) => item.id === id);
+                    if (index > -1) {
+                        list.splice(index, 1);
+                        return true;
+                    }
+                }
+                return false;
+            };
+        };
+        this.getUnwatchAll = (id) => {
+            return () => {
+                this.watchMap.forEach((value, key) => {
+                    const list = this.watchMap.get(key);
+                    if (list) {
+                        const index = list.findIndex((item) => item.id === id);
+                        if (index > -1) {
+                            list.splice(index, 1);
+                            return true;
+                        }
+                    }
+                });
+                return false;
+            };
+        };
         this.emit = (event, data) => {
             const map = this.watchMap.get(event);
             if (map)
@@ -27,40 +55,12 @@ class Storage {
         this.getListener = (id) => {
             const watch = this.getWatch(id);
             const unwatch = this.getUnwatch(id);
-            const unWatchAll = this.getUnwatchAll(id);
-            return { watch, unwatch, unWatchAll };
+            const unwatchAll = this.getUnwatchAll(id);
+            return { watch, unwatch, unwatchAll };
         };
         this.watchMap = new Map();
         this._state = {};
         this.initProps(state);
-    }
-    getUnwatch(id) {
-        return (variableName) => {
-            const list = this.watchMap.get(variableName);
-            if (list) {
-                const index = list.findIndex((item) => item.id === id);
-                if (index > -1) {
-                    list.splice(index, 1);
-                    return true;
-                }
-            }
-            return false;
-        };
-    }
-    getUnwatchAll(id) {
-        return () => {
-            this.watchMap.forEach((value, key) => {
-                const list = this.watchMap.get(key);
-                if (list) {
-                    const index = list.findIndex((item) => item.id === id);
-                    if (index > -1) {
-                        list.splice(index, 1);
-                        return true;
-                    }
-                }
-            });
-            return false;
-        };
     }
     get state() {
         return this._state;

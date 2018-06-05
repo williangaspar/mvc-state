@@ -36,7 +36,7 @@ export class Storage<T> implements IStorage<T> {
         }
     }
 
-    public getUnwatch(id: string): Unwatch {
+    public getUnwatch = (id: string): Unwatch => {
         return (variableName: string) => {
             const list = this.watchMap.get(variableName);
             if (list) {
@@ -50,7 +50,7 @@ export class Storage<T> implements IStorage<T> {
         }
     }
 
-    public getUnwatchAll(id: string): UnwatchAll {
+    public getUnwatchAll = (id: string): UnwatchAll => {
         return () => {
             this.watchMap.forEach((value: any, key: string) => {
                 const list = this.watchMap.get(key);
@@ -78,9 +78,9 @@ export class Storage<T> implements IStorage<T> {
     }
 
     public getListener = (id: string): Listener => {
-        const watch = this.getWatch(id).bind(this);
-        const unwatch = this.getUnwatch(id).bind(this);
-        const unwatchAll = this.getUnwatchAll(id).bind(this);
+        const watch = this.getWatch(id);
+        const unwatch = this.getUnwatch(id);
+        const unwatchAll = this.getUnwatchAll(id);
         return { watch, unwatch, unwatchAll };
     }
 
