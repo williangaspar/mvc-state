@@ -77,7 +77,7 @@ export class Storage<T> implements IStorage<T> {
             map.forEach((item) => item.callBack(data));
     }
 
-    public getListernner = (id: string): Listener => {
+    public getListerner = (id: string): Listener => {
         const watch = this.getWatch(id);
         const unwatch = this.getUnwatch(id);
         const unWatchAll = this.getUnwatchAll(id);
