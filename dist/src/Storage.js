@@ -24,7 +24,7 @@ class Storage {
             if (map)
                 map.forEach((item) => item.callBack(data));
         };
-        this.getListerner = (id) => {
+        this.getListener = (id) => {
             const watch = this.getWatch(id);
             const unwatch = this.getUnwatch(id);
             const unWatchAll = this.getUnwatchAll(id);

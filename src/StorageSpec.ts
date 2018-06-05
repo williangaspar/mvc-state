@@ -88,7 +88,7 @@ describe('Storage.', () => {
     });
 
     it('unwatchAll', () => {
-        const listener = storage.getListerner('ctrl1');
+        const listener = storage.getListener('ctrl1');
         let call1 = false;
         let call2 = false;
 

@@ -8,7 +8,7 @@ export declare class Storage<T> implements IStorage<T> {
     getUnwatchAll(id: string): UnwatchAll;
     readonly state: T;
     emit: (event: string, data?: any) => void;
-    getListerner: (id: string) => Listener;
+    getListener: (id: string) => Listener;
     private initProps<T>(state);
     private createGetAndSet(key, value);
 }
