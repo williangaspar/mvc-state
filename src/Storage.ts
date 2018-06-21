@@ -1,4 +1,4 @@
-import { IStorage, Watch, Unwatch, Emit, Listener, UnwatchAll } from './IStorage';
+import { IStorage, Unwatch, Listener, UnwatchAll } from './IStorage';
 
 interface IMapFunction {
     id: string;
@@ -90,17 +90,18 @@ export class Storage<T> implements IStorage<T> {
     }
 
     private createGetAndSet(key: string, value: any) {
-        (this._state as any)['_' + key] = value;
+        (this._state as any)['$_' + key] = value;
 
         Object.defineProperty(this._state, key, {
-            get: () => (this._state as any)['_' + key],
+            get: () => (this._state as any)['$_' + key],
             set: (value: any) => {
-                (this._state as any)['_' + key] = value;
+                (this._state as any)['$_' + key] = value;
 
                 const map = this.watchMap.get(key)
                 if (map)
                     map.forEach((item) => item.callBack(this._state[key]));
             },
+            enumerable: true,
         });
     }
 }

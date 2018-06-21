@@ -70,15 +70,16 @@ class Storage {
         props.forEach((prop) => this.createGetAndSet(prop, state[prop]));
     }
     createGetAndSet(key, value) {
-        this._state['_' + key] = value;
+        this._state['$_' + key] = value;
         Object.defineProperty(this._state, key, {
-            get: () => this._state['_' + key],
+            get: () => this._state['$_' + key],
             set: (value) => {
-                this._state['_' + key] = value;
+                this._state['$_' + key] = value;
                 const map = this.watchMap.get(key);
                 if (map)
                     map.forEach((item) => item.callBack(this._state[key]));
             },
+            enumerable: true,
         });
     }
 }

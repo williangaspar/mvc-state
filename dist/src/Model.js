@@ -9,7 +9,9 @@ class Model {
         this.view.setState(obj);
     }
     loadStorage() {
-        const props = Object.keys(this.storage).map((key) => key);
+        const props = Object.keys(this.storage)
+            .filter(key => key.indexOf('$_') == -1)
+            .map((key) => key);
         let obj = {};
         props.forEach((prop) => obj[prop] = this.storage[prop]);
         this.view.setState(obj);

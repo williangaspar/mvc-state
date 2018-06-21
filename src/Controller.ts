@@ -1,5 +1,4 @@
-import { IModel } from './IModel';
-import { GetWatch, Watch, IController,  } from './IController';
+import { GetWatch, Watch, IController } from './IController';
 
 export class Controller implements IController {
     public setIdToWatch(watch: GetWatch): Watch {
