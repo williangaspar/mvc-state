@@ -1,12 +1,4 @@
-import { Model } from './Model';
-import { IView } from './IView';
-
 import { Controller } from './Controller';
-
-interface IMyInterface {
-    prop: number;
-    str: string;
-}
 
 class MyController extends Controller {
     public model: any = { loadStorage: () => 'storage' };

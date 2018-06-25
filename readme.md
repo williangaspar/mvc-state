@@ -1,11 +1,9 @@
 
 # MVC State
 
-## TODO
-* update exemple's folder and readme
 
 ## The MVC patter
-There is many definitions of whats is MVC out there, here is the one we are following:
+There are many definitions of what is MVC out there, here is the one this project follows:
 
 ![MVC](mvc.png)
 
@@ -23,18 +21,18 @@ export class MyData {
 
 export enum MyDataEvt {
     FOO = 'foo',
-    BAR = 'bar'
+    BAR = 'bar',
+    DEC_BAR = 'DEC_BAR',
 }
 
 export const MyDataStorage = new Storage<MyData>(new MyData());
 ```
 
-We start by creating a class with all data we want to share, called, `MyData` is this exemple. Don't forget to give a initial value to EVERY property.
-Next you have an event `enum`. Later on you will see that MVC-State uses watchers to capture changes in the data storage. `MyDataEvt` will be responsible for provide you with the right events to listem.
-
+We start by creating a class with all data to be shared called `MyData` in this example. Don't forget to give an initial value to EVERY property otherwise, it won't work properly later.
+`MyDataEvt` will be responsible for providing you with the right events to listen.
 ## Model
 
-Models holds all the businness logic of your application.
+Models hold all the business logic of your application.
 
 ```javascript
 import { Model, IView } from 'mvc-state';
@@ -53,12 +51,12 @@ export class InputModel extends Model<MyData> {
 }
 ```
 
-By default a model's constructor takes 2 parameter:
-* `view` - That's the object you need to call when you want to update the view layer.
-* `storage` - That's the object you call when you want to update the shared storage.
+By default a model's constructor takes 2 parameters:
+* `view` - That's the react component with all its properties
+* `storage` - That's the object we created earlier
 
-The `IntFoo` function shows the basic usage of these 2 objects. When `this.storage.foo` is set, a event
-is send out to every watcher listening to the `MyDataEvt.FOO` event. And `this.updateView` works like the
+The `IntFoo` function shows the basic usage of these 2 objects. When `this.storage.foo` is set, an event
+is sent out to every watcher listening to the `MyDataEvt.FOO` event. And `this.updateView` works like the
 `setState` used by React.
 
 Be aware that the view will only be updated when you call `updateView`.
@@ -68,46 +66,40 @@ Be aware that the view will only be updated when you call `updateView`.
 Controllers are responsible for listening to the view, storage events and talk to the model.
 
 ```javascript
-import { Controller, GetWatch, Watch } from 'mvc-state';
+import { Controller, Listener } from 'mvc-state';
 import { InputModel } from './InputModel';
+import { MyDataEvt } from './MyData';
 
 export class InputCtrl extends Controller {
     private model: InputModel;
+    private emit: Function,
+    private listener: Listener,
 
-    constructor(model: InputModel) {
+    constructor(model: InputModel, emit: Function, listener: Listener) {
         super();
         this.model = model;
+        this.emit = emit;
+        this.listener = listener;
+
+        // This will be triggered when some controller calls `this.emit(MyDataEvt.FOO, value)`
+        this.listener.watch(MyDataEvt.FOO, (inc: number) => this.model.incFoo(inc));
+
+        // This will be triggered when some controller calls `this.emit(MyDataEvt.DEC_BAR, value)`
+        this.listener.watch(MyDataEvt.DEC_BAR, (dec: number) => this.model.incFoo(dec));
     }
 
     public onIncBar = () => {
+        // Here we are calling the model
         this.model.incBar(1);
     }
 
     public onDecBar = () => {
-        this.model.incBar(-1);
+        // Here we are emiting an event
+        this.emit(MyDataEvt.DEC_BAR, -1);
     }
 }
 
-export class ChartCtrl extends Controller {
-    private model: ChartModel;
-
-    constructor(model: ChartModel, getWatch: GetWatch) {
-        super();
-        this.model = model;
-
-        //Just getting a unique id. you can set your own id by calling: getWatch('myId');
-        const watch = this.setIdToWatch(getWatch);
-
-        watch(MyDataEvt.FOO, (foo: number) => this.model.calcFoo(foo));
-        watch(MyDataEvt.BAR, (bar: number) => this.model.calcBar(bar));
-    };
-}
-
 ```
-
-Above we have two of them. The first one is just expecting the view to call one of it's function so it can
-talk to the model. The second one is listenning to some events. the `watch` function will be triggerd every
-time someone sets a new value to a storage. (`this.storage.FOO = bar`)
 
 ## View
 
@@ -126,7 +118,9 @@ export class Input extends React.Component {
     constructor(props: any) {
         super(props);
         const dataModule = new InputModel(this, MyDataStorage.state);
-        this.ctrl = new InputCtrl(dataModule);
+
+        // The way to get a listener is to pass a unique id to the function MyDataStorage.getListner
+        this.ctrl = new InputCtrl(dataModule, MyDataStorage.emit, MyDataStorage.getListner('InputCtrl'));
         this.state = new MyData();
     }
 
