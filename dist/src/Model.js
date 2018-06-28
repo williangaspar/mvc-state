@@ -8,6 +8,11 @@ class Model {
     updateView(obj) {
         this.view.setState(obj);
     }
+    setState(obj) {
+        const props = Object.keys(obj).map((key) => key);
+        props.forEach((prop) => this.storage[prop] = obj[prop]);
+        this.view.setState(obj);
+    }
     loadStorage() {
         const props = Object.keys(this.storage)
             .filter(key => key.indexOf('$_') == -1)

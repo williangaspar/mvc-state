@@ -1,13 +1,19 @@
 import { Model } from './Model';
 import { IView } from './IView';
+import {Storage} from './Storage';
 
-interface IMyInterface {
-    prop: number;
-    str: string;
+export class MyData {
+    prop: number = 0;
+    str: string = '';
 }
 
-class MyModel extends Model<IMyInterface> {
-    constructor(view: IView, storageObj: IMyInterface) {
+export enum MyDataEvt {
+    FOO = 'foo',
+    BAR = 'bar'
+}
+
+class MyModel extends Model<MyData> {
+    constructor(view: IView, storageObj: MyData) {
         super(view, storageObj);
     }
 
@@ -16,9 +22,13 @@ class MyModel extends Model<IMyInterface> {
         this.updateView({ prop: this.storage.prop });
     }
 
+    public setProp(value: number) {
+       this.setState({prop: value})
+    }
+
     public setStr(str: string) {
         this.storage.str = str;
-        this.updateView(this.storage);
+        this.updateView({str: this.storage.str});
     }
 
 }
@@ -26,19 +36,31 @@ class MyModel extends Model<IMyInterface> {
 describe('Model', () => {
     let view: IView;
     let model: MyModel;
+    let state: MyData;
 
     beforeEach(() => {
         view = { setState: (state: any) => null };
-        model = new MyModel(view, { prop: 0, str: '' });
+        const MyDataStorage = new Storage<MyData>(new MyData());
+        state = MyDataStorage.state;
+        model = new MyModel(view, MyDataStorage.state);
     })
 
-    it('UpdateView', () => {
+    it('updateView', () => {
         spyOn(view, 'setState');
         model.incProp();
         expect(view.setState).toHaveBeenCalledWith({ prop: 1 });
 
         model.setStr('A');
-        expect(view.setState).toHaveBeenCalledWith({ prop: 1, str: 'A' });
+        expect(view.setState).toHaveBeenCalledWith({ str: 'A' });
+    });
+
+    it('setState', () => {
+        spyOn(view, 'setState');
+        model.setProp(100);
+
+        expect(view.setState).toHaveBeenCalledWith({ prop: 100 });
+        expect(state.prop).toBe(100);
+
     });
 
     it('loadStorage', () => {

@@ -14,6 +14,12 @@ export class Model<T> implements IModel<T> {
         this.view.setState(obj);
     }
 
+    public setState(obj?: Object | T): void {
+        const props = Object.keys(obj).map((key) => key);
+        props.forEach((prop) => (this.storage as any)[prop] = (obj as any)[prop]);
+        this.view.setState(obj);
+    }
+
     public loadStorage() {
         const props = Object.keys(this.storage)
             .filter(key => key.indexOf('$_') == -1)
