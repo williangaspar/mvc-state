@@ -48,6 +48,11 @@ export class InputModel extends Model<MyData> {
         this.storage.foo += value;
         this.updateView({ foo: this.storage.foo });
     }
+
+      public incBar(value: number) {
+        // setState updates both storage and view
+        this.setState({ foo: this.storage.foo });
+    }
 }
 ```
 

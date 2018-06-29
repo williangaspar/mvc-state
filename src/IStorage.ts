@@ -8,6 +8,7 @@ export interface IStorage<T> {
     getUnwatch(id: string): Unwatch;
     emit: Emit;
     getListener(id: string): Listener;
+    clear(): void;
     readonly state: T
 }
 

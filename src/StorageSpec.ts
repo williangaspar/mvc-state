@@ -127,4 +127,38 @@ describe('Storage.', () => {
 
         expect(called).toBe(true);
     });
+
+    it('clear state', () => {
+        storage.state.var1 = 101;
+        storage.state.var2 = 'test';
+
+        expect(storage.state.var1).toBe(101);
+        expect(storage.state.var2).toBe('test');
+
+        storage.clear();
+
+        expect(storage.state.var1).toBe(0);
+        expect(storage.state.var2).toBe('');
+
+        storage.state.var1 = 202;
+        storage.state.var2 = 'test2';
+
+        expect(storage.state.var1).toBe(202);
+        expect(storage.state.var2).toBe('test2');
+    });
+
+    it('clear state watcher', () => {
+        const watch = storage.getWatch('myCtrl');
+        let called = false;
+
+        watch('myEvent', (data: any) => {
+            called = data;
+        });
+
+        storage.clear();
+
+        storage.emit('myEvent', true);
+
+        expect(called).toBe(true);
+    });
 });

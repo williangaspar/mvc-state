@@ -8,10 +8,12 @@ interface IMapFunction {
 export class Storage<T> implements IStorage<T> {
     private watchMap: Map<string, IMapFunction[]>;
     private _state: any;
+    private stateClass: any
 
     constructor(state: T) {
         this.watchMap = new Map();
         this._state = {};
+        this.stateClass = state;
         this.initProps(state);
     }
 
@@ -75,6 +77,11 @@ export class Storage<T> implements IStorage<T> {
         const map = this.watchMap.get(event)
         if (map)
             map.forEach((item) => item.callBack(data));
+    }
+
+    public clear(): void {
+        this._state = {};
+        this.initProps(this.stateClass);
     }
 
     public getListener = (id: string): Listener => {
