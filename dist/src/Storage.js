@@ -60,10 +60,15 @@ class Storage {
         };
         this.watchMap = new Map();
         this._state = {};
+        this.stateClass = state;
         this.initProps(state);
     }
     get state() {
         return this._state;
+    }
+    clear() {
+        this._state = {};
+        this.initProps(this.stateClass);
     }
     initProps(state) {
         const props = Object.keys(state).map((key) => key);
