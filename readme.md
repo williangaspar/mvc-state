@@ -1,7 +1,6 @@
 
 # MVC State
 
-
 ## The MVC patter
 There are many definitions of what is MVC out there, here is the one this project follows:
 
@@ -49,7 +48,7 @@ export class InputModel extends Model<MyData> {
         this.updateView({ foo: this.storage.foo });
     }
 
-      public incBar(value: number) {
+    public incBar(value: number) {
         // setState updates both storage and view
         this.setState({ foo: this.storage.foo });
     }
@@ -144,3 +143,14 @@ export class Input extends React.Component {
 ```
 
 Not much to say here. It is just react. Every time you call `viewUpdate` in a model, the state will be updated, any event should be handled by the controller.
+
+## API
+
+* **Controller** - Object responsible for manage events, validate data coming from the view and talk to the model.
+* **GetWatcher** -  Function that takes an argument ID and returns an event watcher.
+* **Listener** -  Object with the functions to watch and unWatch events for a storage.
+* **Storage** - Object responsible for storing data, emission, and listening of events.
+* **Unwatch** -  Function that takes an argument event ID and removes the watcher associated with it.
+* **Watch** - Function that takes an event ID and a callback as arguments and link the event with the callback
+* **Model** - Object that holds the business layer, update the view and storage.
+
