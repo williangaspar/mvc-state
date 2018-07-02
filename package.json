@@ -2,6 +2,10 @@
   "name": "mvc-state",
   "version": "0.0.4",
   "description": "",
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/williangaspar/mvc-state"
+  },
   "main": "dist/index.js",
   "scripts": {
     "test": "jasmine-ts \"./**/*Spec.ts\"",

@@ -147,10 +147,21 @@ Not much to say here. It is just react. Every time you call `viewUpdate` in a mo
 ## API
 
 * **Controller** - Object responsible for manage events, validate data coming from the view and talk to the model.
+	* setIdToWatch - generates watcher ID
+	* loadStorage - load data from storage to view state
+* **Model** - Object that holds the business layer, update the view and storage.
+	* updateView - Updates the view state
+	* setState - Updates view and storaga stage
+	* loadStorage - load data from storage to view state
+* **Storage** - Object responsible for storing data, emission, and listening of events.
+	* emit - Event emitter
+	* getListener - Returns a listener, takes an unique ID argument
+	* clear - reset storage values
+	* state - storage state
 * **GetWatcher** -  Function that takes an argument ID and returns an event watcher.
 * **Listener** -  Object with the functions to watch and unWatch events for a storage.
-* **Storage** - Object responsible for storing data, emission, and listening of events.
+
 * **Unwatch** -  Function that takes an argument event ID and removes the watcher associated with it.
 * **Watch** - Function that takes an event ID and a callback as arguments and link the event with the callback
-* **Model** - Object that holds the business layer, update the view and storage.
+
 

@@ -1,5 +1,6 @@
 export interface IController {
     setIdToWatch(watch: GetWatch): Watch;
+    loadStorage(): void;
 }
 
 export type GetWatch = (id: string) => Watch;
